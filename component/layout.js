@@ -1,5 +1,4 @@
 import Navbar from "./navbar";
-import Footer from "./footer";
 import "tailwindcss/tailwind.css";
 
 const Layout = ({ children }) => {
