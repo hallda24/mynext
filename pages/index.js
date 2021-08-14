@@ -1,19 +1,15 @@
-import Head from "next/head";
 import Link from "next/link";
-import React, { Component } from "react";
 
 export default function Home() {
-  const App = 23;
-
   return (
     <>
-      <h1>Hello</h1>
-      <h1 className="title">
+      <div className="container">
+        <h1>HomePage</h1>
+        <p></p>
         <Link href="/about">
-          <a>About Page</a>
+          <a>about</a>
         </Link>
-      </h1>
-      <p>{App}</p>
+      </div>
     </>
   );
 }
