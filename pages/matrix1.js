@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import react, { useState, useEffect } from "react";
 
 export default function matrix1() {
   const [matrixA, setmatrixA] = useState(
@@ -12,23 +12,31 @@ export default function matrix1() {
     Array.from(
       { length: 3 },
       () => Array.from({ length: 3 }),
-      () => null
+      () => 1
     )
   );
 
-  console.log(matrixA);
-
-  const handleChange = (row, column, event) => {
+  const handleChangeA = (row, column, event) => {
     let copy = [...matrixA];
     copy[row][column] = +event.target.value;
     setmatrixA(copy);
   };
 
-  const matrixMuti = (a, b) => {
-    return a.map((_, i) =>
-      b[0].map((_, j) => a[i].reduce((sum, _, k) => sum + a[i][k] + b[k][j]))
-    );
+  const handleChangeB = (row, column, event) => {
+    let copy = [...matrixB];
+    copy[row][column] = +event.target.value;
+    setmatrixB(copy);
   };
+
+  useEffect(() => {
+    MatrixMuti();
+  }, [matrixA, matrixB]);
+
+  function MatrixMuti(A = matrixA, B = matrixB) {
+    return A.map((row, i) =>
+      B[0].map((_, j) => A[i].reduce((sum, _, n) => sum + A[i][n] * B[n][j], 0))
+    );
+  }
 
   return (
     <>
@@ -50,8 +58,8 @@ export default function matrix1() {
                       <td key={icol} className="px-4 py-3 ">
                         <input
                           type="number"
-                          onChange={(e) => handleChange(irow, icol, e)}
-                          className="w-7"
+                          onChange={(e) => handleChangeA(irow, icol, e)}
+                          className="w-7 text-center"
                         />
                       </td>
                     ))}
@@ -70,21 +78,19 @@ export default function matrix1() {
                 </tr>
               </thead>
               <tbody className="text-xl">
-                <tr>
-                  <td className="px-4 py-3 ">1</td>
-                  <td className="px-4 py-3 ">-1</td>
-                  <td className="px-4 py-3 ">3</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 ">2</td>
-                  <td className="px-4 py-3 ">0</td>
-                  <td className="px-4 py-3 ">1</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 ">0</td>
-                  <td className="px-4 py-3 ">2</td>
-                  <td className="px-4 py-3">-5</td>
-                </tr>
+                {matrixB.map((row, irow) => (
+                  <tr key={irow} className="">
+                    {row.map((column, icol) => (
+                      <td key={icol} className="px-4 py-3">
+                        <input
+                          type="number"
+                          onChange={(e) => handleChangeB(irow, icol, e)}
+                          className="w-7 text-center"
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -94,26 +100,23 @@ export default function matrix1() {
                 <tr className="text-3xl font-semibold tracking-wide text-center text-gray-900 uppercase border-b border-gray-600">
                   <th></th>
                   <th>AB</th>
-                  <th></th>
+                  <th>
+                    <button className="mr-5 hover:text-gray-900 py-1 px-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                      Cal
+                    </button>
+                  </th>
                 </tr>
               </thead>
               <tbody className="text-xl">
-                matrix1(matrixA, matrixB)
-                <tr>
-                  <td className="px-4 py-3 ">{matrixA}</td>
-                  <td className="px-4 py-3 ">-1</td>
-                  <td className="px-4 py-3 ">3</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 ">2</td>
-                  <td className="px-4 py-3 ">0</td>
-                  <td className="px-4 py-3 ">1</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 ">0</td>
-                  <td className="px-4 py-3 ">2</td>
-                  <td className="px-4 py-3">-5</td>
-                </tr>
+                {MatrixMuti().map((row, irow) => (
+                  <tr key={irow} className="">
+                    {row.map((col, icol) => (
+                      <td key={icol} className="px-4 py-3">
+                        {col}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
