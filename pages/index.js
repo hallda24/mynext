@@ -5,10 +5,6 @@ export default function Home() {
     <>
       <div className="container">
         <h1>HomePage</h1>
-        <p></p>
-        <Link href="/about">
-          <a>about</a>
-        </Link>
       </div>
     </>
   );
