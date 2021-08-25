@@ -16,6 +16,11 @@ function Nav() {
           Matrix1
         </button>
       </Link>
+      <Link href="/matrix2">
+        <button className="mr-5 hover:text-gray-900 py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+          Matrix2
+        </button>
+      </Link>
       <Link href="/contact-us">
         <button className="mr-5 hover:text-gray-900 py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
           Contact Us

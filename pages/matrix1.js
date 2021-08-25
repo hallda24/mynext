@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function matrix1() {
   const [matrixA, setmatrixA] = useState(
@@ -34,7 +34,7 @@ export default function matrix1() {
 
   function MatrixMuti(A = matrixA, B = matrixB) {
     return A.map((row, i) =>
-      B[0].map((_, j) => A[i].reduce((sum, _, n) => sum + A[i][n] * B[n][j], 0))
+      row.map((_, j) => A[i].reduce((sum, _, n) => sum + A[i][n] * B[n][j], 0))
     );
   }
 
@@ -100,11 +100,7 @@ export default function matrix1() {
                 <tr className="text-3xl font-semibold tracking-wide text-center text-gray-900 uppercase border-b border-gray-600">
                   <th></th>
                   <th>AB</th>
-                  <th>
-                    <button className="mr-5 hover:text-gray-900 py-1 px-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
-                      Cal
-                    </button>
-                  </th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody className="text-xl">
