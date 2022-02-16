@@ -21,13 +21,7 @@ export default function matrix1() {
     setcapacity(+e.target.value);
   };
 
-  /* const items = [
-    [26, 31, 51, 19, 20],
-    [8, 13, 12, 15, 20],
-  ];
-  let capacitys = 45;
-
-  const knapSackH = (item, capacity) => {
+  const pw = (item, capacity) => {
     let newArr = [...Array(3)].map((x) => Array(item[0].length).fill(0));
     item[0].map((col, icol) => {
       newArr[0][icol] = item[0][icol];
@@ -52,8 +46,6 @@ export default function matrix1() {
     }
     return newArr;
   };
-
-  console.log(knapSackH(items, capacitys)); */
 
   const knapSack = (values, weights, n, target) => {
     if (target < 0) {
@@ -119,6 +111,13 @@ export default function matrix1() {
                           ))}
                         </tr>
                       ))}
+                      <tr className="bg-gray-200 border-b dark:bg-gray-800 dark:border-gray-700">
+                        {pw(item, capacity)[2].map((row, irow) => (
+                          <td className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 text-center">
+                            {row}
+                          </td>
+                        ))}
+                      </tr>
                     </tbody>
                   </table>
                 </div>
