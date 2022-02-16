@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 
 export default function matrix1() {
-  const [capacity, setcapacity] = useState(45);
+  const [V, setV] = useState(5);
 
   const [item, setitem] = useState(
-    //[...Array(2)].map((x) => Array(capacity).fill(0))
+    //[...Array(capacity)].map((x) => Array(capacity).fill(0))
     [
-      [26, 31, 51, 19, 20],
-      [8, 13, 12, 15, 20],
+      [0, 2, 0, 6, 0],
+      [2, 0, 3, 8, 5],
+      [0, 3, 0, 0, 7],
+      [6, 8, 0, 0, 9],
+      [0, 5, 7, 9, 0],
     ]
   );
 
@@ -17,60 +20,61 @@ export default function matrix1() {
     setitem(copy);
   };
 
-  const handleChangeCapacity = (e) => {
-    setcapacity(+e.target.value);
-  };
+  // A utility function to find the vertex with
+  // minimum key value, from the set of vertices
+  // not yet included in MST
+  function minKey(key, mstSet) {
+    // Initialize min value
+    let min = Number.MAX_VALUE,
+      min_index;
 
-  /* const items = [
-    [26, 31, 51, 19, 20],
-    [8, 13, 12, 15, 20],
-  ];
-  let capacitys = 45;
+    for (let v = 0; v < V; v++)
+      if (mstSet[v] == false && key[v] < min) (min = key[v]), (min_index = v);
 
-  const knapSackH = (item, capacity) => {
-    let newArr = [...Array(3)].map((x) => Array(item[0].length).fill(0));
-    item[0].map((col, icol) => {
-      newArr[0][icol] = item[0][icol];
-      newArr[1][icol] = item[1][icol];
-      newArr[2][icol] = item[0][icol] / item[1][icol];
-    });
+    return min_index;
+  }
 
-    var r,
-      result = 0;
-    while (capacity > 0) {
-      if (item[1][r] < capacity) {
-        result += item[0][r];
-        capacity = capacity - item[1][r];
-      } else {
-        let valuse = capacity * item[0][r];
-        let weight = item[1][r];
-        let p_w = valuse / weight;
-        result = result + p_w;
-        capacity = 0;
-      }
-      r++;
+  function primMST(graph) {
+    // Array to store constructed MST
+    let parent = [];
+
+    // Key values used to pick minimum weight edge in cut
+    let key = [];
+
+    // To represent set of vertices included in MST
+    let mstSet = [];
+
+    // Initialize all keys as INFINITE
+    for (let i = 0; i < V; i++)
+      (key[i] = Number.MAX_VALUE), (mstSet[i] = false);
+
+    // Always include first 1st vertex in MST.
+    // Make key 0 so that this vertex is picked as first vertex.
+    key[0] = 0;
+    parent[0] = -1; // First node is always root of MST
+
+    // The MST will have V vertices
+    for (let count = 0; count < V - 1; count++) {
+      // Pick the minimum key vertex from the
+      // set of vertices not yet included in MST
+      let u = minKey(key, mstSet);
+
+      // Add the picked vertex to the MST Set
+      mstSet[u] = true;
+
+      // Update key value and parent index of
+      // the adjacent vertices of the picked vertex.
+      // Consider only those vertices which are not
+      // yet included in MST
+      for (let v = 0; v < V; v++)
+        // graph[u][v] is non zero only for adjacent vertices of m
+        // mstSet[v] is false for vertices not yet included in MST
+        // Update the key only if graph[u][v] is smaller than key[v]
+        if (graph[u][v] && mstSet[v] == false && graph[u][v] < key[v])
+          (parent[v] = u), (key[v] = graph[u][v]);
     }
-    return newArr;
-  };
-
-  console.log(knapSackH(items, capacitys)); */
-
-  const knapSack = (values, weights, n, target) => {
-    if (target < 0) {
-      return Number.MIN_SAFE_INTEGER;
-    }
-
-    if (n < 0 || target === 0) {
-      return 0;
-    }
-
-    let include =
-      values[n] + knapSack(values, weights, n - 1, target - weights[n]);
-
-    let exclude = knapSack(values, weights, n - 1, target);
-
-    return Math.max(include, exclude);
-  };
+    return parent;
+  }
 
   return (
     <>
@@ -108,8 +112,8 @@ export default function matrix1() {
                               className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700"
                             >
                               <input
-                                type="number"
                                 value={col}
+                                type="number"
                                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 onChange={(e) =>
                                   handleChangeitem(irow, icol, e)
@@ -126,55 +130,49 @@ export default function matrix1() {
             </div>
           </div>
 
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
                 <div className="overflow-hidden shadow-md sm:rounded-lg">
                   <table className="min-w-full">
                     <thead className="bg-gray-100">
                       <tr>
-                        <th>capacity</th>
+                        <th>V</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <input
-                            type="number"
-                            value={capacity}
-                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            onChange={handleChangeCapacity}
-                          />
-                        </td>
-                      </tr>
+                      <input
+                        type="number"
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        onChange={handleChangeV}
+                      />
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex flex-col">
-            <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="overflow-x-auto sm:-mx-6 lg:-mx-8 px-5">
               <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
                 <div className="overflow-hidden shadow-md sm:rounded-lg">
                   <table className="min-w-full">
                     <thead className="bg-gray-100">
                       <tr>
-                        <th>Result</th>
+                        <th className="py-3 px-6">Edge</th>
+                        <th className="py-3 px-6">Weight</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td className="text-md p-2">
-                          {knapSack(
-                            item[0],
-                            item[1],
-                            item[0].length - 1,
-                            capacity
-                          )}
-                        </td>
-                      </tr>
+                      {primMST(item).map((row, irow) => (
+                        <tr>
+                          <td className="py-3 px-6">{row}</td>
+                          <td className="py-3 px-6">
+                            {item[irow][primMST(item)[irow]]}
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
